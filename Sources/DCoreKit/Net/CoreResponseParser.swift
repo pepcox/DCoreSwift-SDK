@@ -54,7 +54,7 @@ extension CoreResponseParser {
                 }
                 
                 if result.dictionary.isNil() && result.array.isNil() {
-                    return withUnsafeBytes(of: result.object, { $0.load(as: req.returnType) })
+                    return try result.asJson().or("").asEncoded().asJsonDecoded(to: req.returnType)
                 }
                 
                 return try result.rawData().asJsonDecoded(to: req.returnType)
